@@ -3,5 +3,14 @@
 }
 
 body {
-  font-family: sans-serif, arial, helvetica;
+    width: 70%;
+    margin: 0 15%;
+    font-family: sans-serif, arial, helvetica;
+    border: 1px solid black;
+}
+
+.card {
+    border: 1px solid black;
+    width: 100px;
+    height: 150px;
 }
