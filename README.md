@@ -1,2 +1,3 @@
 # memory
-A basic memory game written in vanilla js 
+
+A basic memory game written in vanilla js
