@@ -4,7 +4,9 @@
   "description": "A basic memory game written in vanilla js",
   "main": "Memory.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/Memory.html",
+    "build": "parcel build src/Memory.html"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/tomstich/memory/issues"
   },
-  "homepage": "https://github.com/tomstich/memory#readme"
+  "homepage": "https://github.com/tomstich/memory#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
 }
