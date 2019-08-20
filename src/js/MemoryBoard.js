@@ -1,8 +1,8 @@
 import { MemoryCard } from "./MemoryCard";
 
 export class MemoryBoard {
-    constructor(app, cardsAmount, memoryCard) {
-        this.app = app;
+    constructor(cardsAmount) {
+        this.gameBoard =  document.getElementById("gameBoard");;
         this.cardsAmount = cardsAmount;
         this.cards = ''
     }
@@ -12,11 +12,10 @@ export class MemoryBoard {
             const memoryCard = new MemoryCard(i)
             this.cards += memoryCard.createCard();
         }
-        console.log(this.cards);
     }
 
     renderMemoryBoard() {
         this.createMemoryBoard();
-        this.app.innerHTML = this.cards;
+        this.gameBoard.innerHTML = this.cards;
     }
 }
