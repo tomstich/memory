@@ -3,7 +3,6 @@ var textForCards = [5, 0, 4, 1, 3, 2, 2, 3, 1, 4, 0, 5];
 export class MemoryCard {
     constructor(id) {
         this.id = id;
-        this.flipped = false;
     }
 
     createCard() {

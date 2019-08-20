@@ -15,6 +15,7 @@ body {
     justify-content: space-around;
     flex-wrap: wrap;
     border: 1px solid black;
+    border-radius: 10px;
 }
 
 .card {
@@ -22,15 +23,16 @@ body {
     border: 1px solid black;
     width: 150px;
     height: 150px;
+    border-radius: 5px;
 }
 
 .card > p {
     text-align: center;
-    margin: 45%;
+    margin: 40%;
 }
 
 .show {
-    background-color: red;
+    background-color: white;
 }
 
 .disabled {

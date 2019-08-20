@@ -1,89 +1,74 @@
 import { MemoryBoard } from "./MemoryBoard";
 
-const app = document.getElementById("app");
-// defines how many cards are going to be rendered
-const cardsAmount = 12
-const game = new MemoryBoard(app, cardsAmount);
-
-var state = {
-    firstSelectedCardId: undefined,
-    secondSelectedCardId: undefined,
-    firstSelectedCard: undefined,
-    secondSelectedCard: undefined,
-    nextClickReset: false,
+const boardState = {
+    boardSize: 12,
+    cardsFound: 0,
+    firstCard: undefined,
+    secondCard: undefined,
 }
 
-function checkForPair() {
-    // check if firstSelectedCard and secondSelectedCard have the same value/picture,
-    if (state.firstSelectedCard === state.secondSelectedCard && state.firstSelectedCardId !== undefined) {
-        console.log(`You found a pair: ${state.firstSelectedCard} : ${state.secondSelectedCard}`);
+const game = new MemoryBoard(boardState.boardSize, boardState.cardsFound);
+
+game.renderMemoryBoard();
+
+// adds event listeners to all cards 
+var cards = document.getElementsByClassName("card");
+Array.from(cards).forEach(function(element) {
+    element.addEventListener('click', selectCard, true);
+});
+
+function selectCard(event) {
+    if (!event.target.matches('.card')) return;
+    event.preventDefault();
+
+    let {firstCard} = boardState;
+
+    if (!firstCard) {
+        boardState.firstCard = event.target;
+        turnCard(event.target.id);
+
     } else {
-        console.log('No pair found')
-    }
-
-    if (state.nextClickReset) {
-        toggleCard(state.firstSelectedCardId);
-        toggleCard(state.secondSelectedCardId);
-
-        state = {
-        ...state,
-            firstSelectedCardId: undefined,
-            firstSelectedCard: undefined,
-            secondSelectedCardId: undefined,
-            secondSelectedCard: undefined,
-            nextClickReset: false,
-        }
-    }
-
-}
-
-function toggleCard(cardId) {
-    var card = document.getElementById(cardId);
-
-    card.classList.toggle("show");
-    card.classList.toggle("disabled");
-}
-
-var select = (event) => {
-    if (!state.firstSelectedCardId && event.target.id) {        
-        state = {
-            ...state,
-            nextClickReset: false,
-            firstSelectedCardId: event.target.id,
-            firstSelectedCard: event.target.innerHTML
-        }
-        
-        toggleCard(event.target.id);
-    } else if (state.firstSelectedCardId && !state.secondSelectedCardId) {
-        state = {
-            ...state,
-            secondSelectedCardId: event.target.id,
-            secondSelectedCard: event.target.innerHTML
-        }
-        
-        if (state.firstSelectedCardId !== state.secondSelectedCardId) {
-            toggleCard(event.target.id);
-            checkForPair();
-
-            state =  {
-                ...state,
-                nextClickReset: true,
-            }
-        }
-    } else {
-        // after updating the state, check for pair
+        boardState.secondCard = event.target;
+        turnCard(event.target.id);
         checkForPair();
     }
 }
 
-game.renderMemoryBoard();
+function turnCard(cardId) {
+    const card = document.getElementById(cardId);
+    card.classList.toggle("show");
+    card.classList.toggle("disabled");
+}
 
-// we call the function select to update the state after each click
-document.addEventListener('click', function (event) {
-    if (!event.target.matches('.card')) return;
-    event.preventDefault();
+function checkForPair() {
+    let {firstCard, secondCard} = boardState;
 
-    select(event);
-}, false);
+    if (firstCard.innerHTML === secondCard.innerHTML) {
+        boardState.cardsFound += 2;
+        console.info('You found a pair!');
+        disableClickForCard();
+        resetBoard();
+    } else {
+        setTimeout(function() {
+            turnCard(boardState.firstCard.id);
+            turnCard(boardState.secondCard.id); 
+            resetBoard();
+        }, 1500);
+    }
+}
+
+function resetBoard() {
+    boardState.firstCard = undefined;
+    boardState.secondCard = undefined;
+}
+
+function disableClickForCard() {
+    console.log('listeners Removed');
+    // removes the event listeners from the found pair
+    document.getElementById(boardState.firstCard.id).removeEventListener("click", selectCard, true);
+    document.getElementById(boardState.secondCard.id).removeEventListener("click", selectCard, true);
+}
+
+
 
 
