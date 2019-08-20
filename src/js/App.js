@@ -7,15 +7,21 @@ const boardState = {
     secondCard: undefined,
 }
 
-const game = new MemoryBoard(boardState.boardSize, boardState.cardsFound);
+const memoryBoard = new MemoryBoard(boardState.boardSize);
+const statusBar =  document.getElementById("statusBar");
 
-game.renderMemoryBoard();
+memoryBoard.renderMemoryBoard();
+renderStatusBar();
 
 // adds event listeners to all cards 
 var cards = document.getElementsByClassName("card");
 Array.from(cards).forEach(function(element) {
     element.addEventListener('click', selectCard, true);
 });
+
+function renderStatusBar() {
+    statusBar.innerHTML = boardState.cardsFound === boardState.boardSize ? `<p>You found all pairs!</p>` : `<p>Pairs found: ${boardState.cardsFound / 2}</p>`;
+}
 
 function selectCard(event) {
     if (!event.target.matches('.card')) return;
@@ -47,6 +53,7 @@ function checkForPair() {
         boardState.cardsFound += 2;
         console.info('You found a pair!');
         disableClickForCard();
+        renderStatusBar();
         resetBoard();
     } else {
         setTimeout(function() {
