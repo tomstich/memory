@@ -8,7 +8,13 @@ export class MemoryCard {
     createCard() {
         const emoji = ['💩', '🧠', '🖖🏻', '🌚', '👁', '🐶']
         const emojiForId = emoji[textForCards[this.id]];
-
-        return `<div id=${this.id} class="card disabled"><p>${emojiForId}</p></div>`;
+        return `   
+            <div class="cardWrapper ">
+                <div class="card" id=${this.id}>
+                    <div class="cardFace cardFaceFront" id=${this.id}><p>${emojiForId}</p></div>
+                    <div class="cardFace cardFaceBack">${emojiForId}</div>
+                </div>
+            </div>
+        `;
     }
 }

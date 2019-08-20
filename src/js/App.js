@@ -15,35 +15,30 @@ renderStatusBar();
 
 // adds event listeners to all cards 
 var cards = document.getElementsByClassName("card");
-Array.from(cards).forEach(function(element) {
-    element.addEventListener('click', selectCard, true);
-});
+Array.from(cards).forEach(
+    function(element) {
+        element.addEventListener( 'click', selectCard, true)
+    }
+);
+
+function flipCard(cardId) {
+    const card = document.getElementById(cardId);
+    card.classList.toggle('isFlipped');
+}
 
 function renderStatusBar() {
     statusBar.innerHTML = boardState.cardsFound === boardState.boardSize ? `<p>You found all pairs!</p>` : `<p>Pairs found: ${boardState.cardsFound / 2}</p>`;
 }
 
-function selectCard(event) {
-    if (!event.target.matches('.card')) return;
-    event.preventDefault();
-
-    let {firstCard} = boardState;
-
-    if (!firstCard) {
+function selectCard() {
+    if (!boardState.firstCard) {
         boardState.firstCard = event.target;
-        turnCard(event.target.id);
-
+        flipCard(event.target.id)
     } else {
         boardState.secondCard = event.target;
-        turnCard(event.target.id);
+        flipCard(event.target.id)
         checkForPair();
     }
-}
-
-function turnCard(cardId) {
-    const card = document.getElementById(cardId);
-    card.classList.toggle("show");
-    card.classList.toggle("disabled");
 }
 
 function checkForPair() {
@@ -57,10 +52,10 @@ function checkForPair() {
         resetBoard();
     } else {
         setTimeout(function() {
-            turnCard(boardState.firstCard.id);
-            turnCard(boardState.secondCard.id); 
+            flipCard(boardState.firstCard.id);
+            flipCard(boardState.secondCard.id); 
             resetBoard();
-        }, 1500);
+        }, 1000);
     }
 }
 
@@ -75,7 +70,3 @@ function disableClickForCard() {
     document.getElementById(boardState.firstCard.id).removeEventListener("click", selectCard, true);
     document.getElementById(boardState.secondCard.id).removeEventListener("click", selectCard, true);
 }
-
-
-
-
