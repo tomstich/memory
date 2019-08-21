@@ -1,10 +1,20 @@
 import { MemoryBoard } from "./MemoryBoard";
 
+const gameModes = {
+    clickCounter: 0,
+    noPressure: 1,
+}
+
 const boardState = {
     boardSize: 12,
     cardsFound: 0,
     firstCard: undefined,
     secondCard: undefined,
+    gameMode: 1,
+}
+
+const clickCounterState = {
+    clicks: 0,
 }
 
 const memoryBoard = new MemoryBoard(boardState.boardSize);
@@ -27,7 +37,21 @@ function flipCard(cardId) {
 }
 
 function renderStatusBar() {
-    statusBar.innerHTML = boardState.cardsFound === boardState.boardSize ? `<p>You found all pairs!</p>` : `<p>Pairs found: ${boardState.cardsFound / 2}</p>`;
+    let statusBarHTML = ''
+    switch (boardState.gameMode) {
+        case gameModes.clickCounter:
+            statusBarHTML =  boardState.cardsFound === boardState.boardSize ? `<p>You found all pairs and it took ${clickCounterState.clicks}</p>` : `<p>Click: ${clickCounterState.clicks}</p>`;
+            break; 
+    
+        case gameModes.noPressure:
+            statusBarHTML = boardState.cardsFound === boardState.boardSize ? `<p>You found all pairs!</p>` : `<p>Pairs found: ${boardState.cardsFound / 2}</p>`;
+            break;
+    
+        default:
+            break;
+    }
+    console.log(statusBarHTML)
+    statusBar.innerHTML = statusBarHTML;
 }
 
 function selectCard() {
@@ -39,6 +63,8 @@ function selectCard() {
         flipCard(event.target.id)
         checkForPair();
     }
+    clickCounterState.clicks++;
+    renderStatusBar()
 }
 
 function checkForPair() {
